@@ -1,6 +1,12 @@
 # RayTracer
 MCRT for Parallel Algorithms Lab.
 
+Usage:
+
+- `cd MPI`
+- Compile : `mpic++ main.cpp`
+- Run     : `mpiexec -n X ./a.out` 
+
 Relevant Links:
 1. http://compsci.hunter.cuny.edu/~sweiss/course_materials/csci493.65/lecture_notes_2014/chapter10.pdf
 2. http://www.cs.cornell.edu/selman/cs475/lectures/intro-mcmc-lukas.pdf
