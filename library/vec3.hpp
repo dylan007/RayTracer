@@ -4,6 +4,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+
+float rn(){
+    return (float)rand() / (float)RAND_MAX;
+}
+
 class vec{
 public:
     float x,y,z;

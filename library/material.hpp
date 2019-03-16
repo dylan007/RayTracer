@@ -8,10 +8,6 @@ public:
     virtual bool scatter(ray &r,hit_record& rec,vec& attenuation,ray& scattered) const = 0;
 };
 
-float rn(){
-    return (float)rand() / (float)RAND_MAX;
-}
-
 vec random_in_unit_sphere(){
     vec p;
     do{

@@ -6,10 +6,11 @@
 using namespace std;
 
 //Define hyperparameters
-#define NX 1000
-#define NY 500
-#define NS 10
+#define NX 2140
+#define NY 1080
+#define NS 100
 #define CONST 10000
+
 
 int main(int argc,char *argv[]){
     //Initializing the MPI Context
@@ -93,6 +94,7 @@ int main(int argc,char *argv[]){
     //         // cout << out;
     //     }
     // }
+
     run(NX,NY,NS,startx,starty,lenx,leny,res);
     for(int i=0;i<lenx;i++){
         for(int j=0;j<leny;j++){
