@@ -9,6 +9,7 @@ float rn(){
     return (float)rand() / (float)RAND_MAX;
 }
 
+
 class vec{
 public:
     float x,y,z;
@@ -42,7 +43,7 @@ inline vec operator/(const vec& a,const float t){return vec(a.x/t,a.y/t,a.z/t);}
 inline vec operator*(const vec& a,const float t){return vec(a.x*t,a.y*t,a.z*t);}
 inline vec operator*(const float t,const vec &a){return vec(a.x*t,a.y*t,a.z*t);}
 inline float dot(const vec &a,const vec &b){return a.x * b.x + a.y * b.y + a.z * b.z;}
-inline vec cross(const vec &a,const vec&b){return vec(a.y * b.z - b.y * a.z,-(a.x * b.z - b.x * a.y),(a.x * b.y - a.y * b.x));}
+inline vec cross(const vec &a,const vec&b){return vec(a.y * b.z - b.y * a.z,-(a.x * b.z - b.x * a.z),(a.x * b.y - a.y * b.x));}
 vec scalar_mul(vec a,float f)
 {
     int i;

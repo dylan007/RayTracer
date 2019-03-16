@@ -8,7 +8,7 @@ using namespace std;
 //Define hyperparameters
 #define NX 2140
 #define NY 1080
-#define NS 100
+#define NS 10
 #define CONST 10000
 
 
