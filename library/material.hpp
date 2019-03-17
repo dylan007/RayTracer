@@ -46,7 +46,7 @@ public:
     lambertian(const vec& a): albedo(a){}
     virtual bool scatter(ray& r_in, hit_record& rec, vec& attenuation, ray& scattered) const{
         vec target = rec.p + rec.normal + random_in_unit_sphere();
-        scattered = ray(rec.p, target-rec.p);
+        scattered = ray(rec.p, target-rec.p,r_in.time());
         attenuation = albedo;
         return true;
     }

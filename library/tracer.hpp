@@ -3,6 +3,7 @@
 #include "hitable_list.hpp"
 #include "camera.hpp"
 #include "material.hpp"
+#include "bvh.hpp"
 #include<math.h>
 using namespace std;
 
@@ -62,13 +63,13 @@ hitable *random_scene() {
     hitable **list = new hitable*[n+1];
     list[0] =  new sphere(vec(0,-1000,0), 1000, new lambertian(vec(0.5, 0.5, 0.5)));
     int i = 1;
-    for (int a = -11; a < 11; a++) {
-        for (int b = -11; b < 11; b++) {
+    for (int a = -10; a < 10; a++) {
+        for (int b = -10; b < 10; b++) {
             float choose_mat = rn();
             vec center(a+0.9*rn(),0.2,b+0.9*rn()); 
             if ((center-vec(4,0.2,0)).length() > 0.9) { 
                 if (choose_mat < 0.8) {  // diffuse
-                    list[i++] = new sphere(center, 0.2, new lambertian(vec(rn()*rn(), rn()*rn(), rn()*rn())));
+                    list[i++] = new moving_sphere(center, center+vec(0,0.5*rn(),0),0.0,1.0,0.2, new lambertian(vec(rn()*rn(), rn()*rn(), rn()*rn())));
                 }
                 else if (choose_mat < 0.95) { // metal
                     list[i++] = new sphere(center, 0.2,
@@ -84,7 +85,7 @@ hitable *random_scene() {
     list[i++] = new sphere(vec(0, 1, 0), 1.0, new dielectric(1.5));
     list[i++] = new sphere(vec(-4, 1, 0), 1.0, new lambertian(vec(0.4, 0.2, 0.1)));
     list[i++] = new sphere(vec(4, 1, 0), 1.0, new metal(vec(0.7, 0.6, 0.5), 0.0));
-    return new hitable_list(list,i);
+    return new bvh_node(list,i,0.0,1.0);
 }
 
 
@@ -105,7 +106,7 @@ void run(int nx,int ny,int ns,int startx,int starty,int lenx,int leny,vector<vec
     float dist_to_focus = 10.0;
     float aperture = 0.1;
 
-    camera cam(lookfrom,lookat,vec(0,1,0),20, float(nx)/float(ny),aperture,dist_to_focus);
+    camera cam(lookfrom,lookat,vec(0,1,0),20, float(nx)/float(ny),aperture,dist_to_focus,0.0,1.0);
 
     // float R = cos(M_PI/4);
     // hitable *list[2];
