@@ -2,6 +2,7 @@
 #define MATERIALH
 #include "ray.hpp"
 #include "hitable.hpp"
+#include "texture.hpp"
 
 class material{
 public:
@@ -43,14 +44,14 @@ bool refract(const vec& v, const vec& n, float ni_over_nt, vec& refracted)
 
 class lambertian : public material {
 public:
-    lambertian(const vec& a): albedo(a){}
+    lambertian(texture *a): albedo(a){}
     virtual bool scatter(ray& r_in, hit_record& rec, vec& attenuation, ray& scattered) const{
         vec target = rec.p + rec.normal + random_in_unit_sphere();
         scattered = ray(rec.p, target-rec.p,r_in.time());
-        attenuation = albedo;
+        attenuation = albedo->value(0,0,rec.p);
         return true;
     }
-    vec albedo;
+    texture *albedo;
 };
 
 class dielectric : public material {

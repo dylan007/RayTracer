@@ -10,10 +10,10 @@ public:
     hitable_list() {;}
     hitable_list(hitable **l, int n){list = l;list_size = n;}
     virtual bool hit(ray& r,float tmin,float tmax,hit_record& rec) const;
-    virtual bool bounding_box(float t0,float t1,aabb& box);
+    virtual bool bounding_box(float t0,float t1,aabb& box) const;
 };
 
-bool hitable_list::bounding_box(float t0,float t1,aabb& box){
+bool hitable_list::bounding_box(float t0,float t1,aabb& box) const {
     if(list_size < 1) return false;
     aabb temp_box;
     bool first_true = list[0]->bounding_box(t0,t1,temp_box);

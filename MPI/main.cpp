@@ -6,8 +6,8 @@
 using namespace std;
 
 //Define hyperparameters
-#define NX 2140
-#define NY 1080
+#define NX 800
+#define NY 600
 #define NS 10
 #define CONST 10000
 
