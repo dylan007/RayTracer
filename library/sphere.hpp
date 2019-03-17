@@ -1,9 +1,8 @@
 #ifndef SPHEREH
 #define SPHEREH
-
 #include "hitable.hpp"
 #include "aabb.hpp"
-
+#include "material.hpp"
 class sphere: public hitable{
     public:
         sphere() {}

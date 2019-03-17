@@ -7,6 +7,7 @@
 class material{
 public:
     virtual bool scatter(ray &r,hit_record& rec,vec& attenuation,ray& scattered) const = 0;
+    virtual vec emitted(float u, float v, const vec& p)const{return vec(0,0,0);}
 };
 
 vec random_in_unit_sphere(){

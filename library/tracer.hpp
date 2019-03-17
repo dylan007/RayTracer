@@ -14,7 +14,7 @@ using namespace std;
 //     float a = dot(r.B,r.B);
 //     float b = 2.0*dot(r.B,oc);
 //     float c = dot(oc,oc) - radius * radius;
-//     float disc = b*b - 4.0*a*c;  
+//     float disc = b*b - 4.0*a*c;
 //     if(disc>=0)
 //         return (-b - sqrt(disc))/(2.0*a);
 //     else
@@ -42,20 +42,22 @@ vec color(ray &r, hitable *world,int depth){
     if(world->hit(r,0.001,MAXFLOAT,rec)){
         ray scattered;
         vec attenuation;
+        vec emitted = rec.mat_ptr->emitted(rec.u,rec.v,rec.p);
         if(depth<50 && rec.mat_ptr->scatter(r,rec,attenuation,scattered))
-            return attenuation * color(scattered,world,depth+1);
+            return emitted + attenuation * color(scattered,world,depth+1);
         else
-            return vec(0,0,0);
+            return emitted;
         // vec target = rec.p + rec.normal + random_in_unit_sphere();
         // ray tmp = ray(rec.p,target-rec.p);
         // return 0.5 * color(tmp, world);
         // return 0.5 * vec(rec.normal.x + 1,rec.normal.y + 1 , rec.normal.z + 1);
     }
     else{
-        vec unit_dir = r.direction();
-        unit_dir.normalize();
-        float t = 0.5 * (unit_dir.y + 1);
-        return (1.0 - t) * vec(1.0,1.0,1.0) + t * vec(0.5,0.7,1.0);
+//        vec unit_dir = r.direction();
+//        unit_dir.normalize();
+//        float t = 0.5 * (unit_dir.y + 1);
+//        return (1.0 - t) * vec(1.0,1.0,1.0) + t * vec(0.5,0.7,1.0);
+            return vec(0,0,0);
     }
 }
 
@@ -86,8 +88,8 @@ hitable *random_scene() {
     for (int a = -10; a < 10; a++) {
         for (int b = -10; b < 10; b++) {
             float choose_mat = rn();
-            vec center(a+0.9*rn(),0.2,b+0.9*rn()); 
-            if ((center-vec(4,0.2,0)).length() > 0.9) { 
+            vec center(a+0.9*rn(),0.2,b+0.9*rn());
+            if ((center-vec(4,0.2,0)).length() > 0.9) {
                 if (choose_mat < 0.8) {  // diffuse
                     list[i++] = new moving_sphere(center, center+vec(0,0.5*rn(),0),0.0,1.0,0.2, new lambertian(new constant_texture(vec(rn()*rn(), rn()*rn(), rn()*rn()))));
                 }
