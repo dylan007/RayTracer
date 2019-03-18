@@ -6,9 +6,9 @@
 using namespace std;
 
 //Define hyperparameters
-#define NX 600
-#define NY 400
-#define NS 100
+#define NX 200
+#define NY 100
+#define NS 10000
 #define CONST 10000
 
 
