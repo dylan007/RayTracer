@@ -1,8 +1,9 @@
-#ifndef RECT_HPP_INCLUDED
-#define RECT_HPP_INCLUDED
+#ifndef AARECTH
+#define AARECTH
+
 #include "hitable.hpp"
 #include "aabb.hpp"
-#include "diffuse.hpp"
+#include "material.hpp"
 
 class xy_rect : public hitable{
 public:

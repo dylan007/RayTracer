@@ -4,9 +4,9 @@
 #include "camera.hpp"
 #include "material.hpp"
 #include "perlin.hpp"
-#include "rect.hpp"
+#include "aarect.hpp"
 #include "bvh.hpp"
-#include "diffuse.hpp"
+// #include "diffuse.hpp"
 #include<math.h>
 #define MAXFLOAT 3.402823e+38
 using namespace std;

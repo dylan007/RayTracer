@@ -5,6 +5,8 @@
 #include "material.hpp"
 #include "bvh.hpp"
 #include "texture.hpp"
+#include "box.hpp"
+#include "aarect.hpp"
 #include<math.h>
 using namespace std;
 
@@ -79,6 +81,37 @@ hitable *two_perlin_spheres(){
     return new hitable_list(list,2);
 }
 
+hitable *simple_light()
+{
+    texture *pertext = new noise_texture(4);
+    hitable **list = new hitable*[4];
+    list[0] = new sphere(vec(0,-1000,0),1000,new lambertian(pertext));
+    list[1] = new sphere(vec(0,2,0),2,new lambertian(pertext));
+    list[2] = new sphere(vec(0,7,0),2,new diffuse_light(new constant_texture(vec(4,4,4))));
+    list[3] = new xy_rect(3,5,1,3,-2,new diffuse_light(new constant_texture(vec(4,4,4))));
+    return new hitable_list(list,4);
+}
+
+
+hitable* cornell_box()
+{
+    hitable **list = new hitable*[6];
+    int i=0;
+    material *red= new lambertian(new constant_texture(vec(0.65,0.05,0.05)));
+    material *white= new lambertian(new constant_texture(vec(0.73,0.73,0.73)));
+    material *green= new lambertian(new constant_texture(vec(0.12,0.45,0.15)));
+    material *light= new diffuse_light(new constant_texture(vec(15,15,15)));
+    list[i++] = new flip_normals(new yz_rect(0,555,0,555,555,green));
+    list[i++] = new yz_rect(0,555,0,555,0,red);
+    list[i++] = new xz_rect(213,343,227,332,554,light);
+    list[i++] = new flip_normals(new xz_rect(0,555,0,555,555,white));
+    list[i++] = new xz_rect(0,555,0,555,0,white);
+    list[i++] = new flip_normals(new xy_rect(0,555,0,555,555,white));
+    list[i++] = new box(vec(130,0,65),vec(295,165,230),white);
+    list[i++] = new box(vec(265,0,295),vec(430,330,460),white);
+    return new hitable_list(list,i);
+}
+
 hitable *random_scene() {
     int n = 500;
     hitable **list = new hitable*[n+1];
@@ -88,8 +121,8 @@ hitable *random_scene() {
     for (int a = -10; a < 10; a++) {
         for (int b = -10; b < 10; b++) {
             float choose_mat = rn();
-            vec center(a+0.9*rn(),0.2,b+0.9*rn());
-            if ((center-vec(4,0.2,0)).length() > 0.9) {
+            vec center(a+0.9*rn(),0.2,b+0.9*rn()); 
+            if ((center-vec(4,0.2,0)).length() > 0.9) { 
                 if (choose_mat < 0.8) {  // diffuse
                     list[i++] = new moving_sphere(center, center+vec(0,0.5*rn(),0),0.0,1.0,0.2, new lambertian(new constant_texture(vec(rn()*rn(), rn()*rn(), rn()*rn()))));
                 }
@@ -110,26 +143,31 @@ hitable *random_scene() {
     return new bvh_node(list,i,0.0,1.0);
 }
 
-
 void run(int nx,int ny,int ns,int startx,int starty,int lenx,int leny,vector<vector<vector<int>>> &res){
-    // cout << "P3\n" << nx << " " << ny << "\n255\n";
+    // cout << "P3\n" << nx << " " << xy_recty << "\n255\n";
     srand(10);
     // hitable *list[5];
-    // list[0] = new sphere(vec(0,0,-1),0.5,new lambertian(vec(0.1,0.2,0.5)));
-    // list[1] = new sphere(vec(0,-100.5,-1),100.0,new lambertian(vec(1.0,0.3,0.0)));
-    // list[2] = new sphere(vec(1,0,-1),0.5,new metal(vec(0.8,0.6,0.2),0.3));
-    // // list[3] = new sphere(vec(-1,0,-1),0.5,new metal(vec(0.8,0.8,0.8),1.0));
-    // list[3] = new sphere(vec(-1,0,-1),0.5,new dielectric(1.5));
-    // list[4] = new sphere(vec(-1,0,-1),-0.45,new dielectric(1.5));
-    // hitable *world = new hitable_list(list,5);
+    // list[0] = new sphere(vec(0,0,-1xy_rect,0.5,new lambertian(vec(0.1,0.2,0.5)));
+    // list[1] = new sphere(vec(0,-100xy_rect5,-1),100.0,new lambertian(vec(1.0,0.3,0.0)));
+    // list[2] = new sphere(vec(1,0,-1xy_rect,0.5,new metal(vec(0.8,0.6,0.2),0.3));
+    // // list[3] = new sphere(vec(-1,xy_rect,-1),0.5,new metal(vec(0.8,0.8,0.8),1.0));
+    // list[3] = new sphere(vec(-1,0,-xy_rect),0.5,new dielectric(1.5));
+    // list[4] = new sphere(vec(-1,0,-xy_rect),-0.45,new dielectric(1.5));
+    // hitable *world = new hitable_lixy_rectt(list,5);
     // hitable *world = two_spheres();
-    hitable *world = two_perlin_spheres();
-    vec lookfrom(13,2,3);
-    vec lookat(0,0,0);
-    float dist_to_focus = 10.0;
-    float aperture = 0.1;
+    // hitable *world = two_perlin_spheres();
+    // hitable *world = simple_light();
+    hitable *world = cornell_box();
+    // vec lookfrom(13,2,3);
+    // vec lookat(0,0,0);
+    // float dist_to_focus = 10.0;
+    // float aperture = 0.1;
+    vec lookfrom(278,278,-800);
+    vec lookat(278,278,0);
+    float dist_to_focus = 10.0;//(lookfrom-lookat).length();
+    float aperture =  0.0;
 
-    camera cam(lookfrom,lookat,vec(0,1,0),20, float(nx)/float(ny),aperture,dist_to_focus,0.0,1.0);
+    camera cam(lookfrom,lookat,vec(0,1,0),40, float(nx)/float(ny),aperture,dist_to_focus,0.0,1.0);
 
     // float R = cos(M_PI/4);
     // hitable *list[2];
